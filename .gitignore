@@ -1,2 +1,7 @@
 # Don't track content of these folders
 web/redis-poc/node_modules/
+api/OnlineGame/OnlineGame.API/bin
+api/OnlineGame/OnlineGame.API/obj
+api/OnlineGame/OnlineGame.Cache/bin
+api/OnlineGame/OnlineGame.Cache/obj
+api/OnlineGame/.vs

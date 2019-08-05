@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGame.API", "OnlineGame.API\OnlineGame.API.csproj", "{FBAC2ADA-E413-4C6A-9D2A-6D1AC6EC79E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGame.Cache", "OnlineGame.Cache\OnlineGame.Cache.csproj", "{429745A9-B0A7-46EE-A40A-CCFAF95B709A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBAC2ADA-E413-4C6A-9D2A-6D1AC6EC79E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBAC2ADA-E413-4C6A-9D2A-6D1AC6EC79E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBAC2ADA-E413-4C6A-9D2A-6D1AC6EC79E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBAC2ADA-E413-4C6A-9D2A-6D1AC6EC79E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D8AACE53-92B2-4654-AA42-10C0F668098D}
+	EndGlobalSection
+EndGlobal

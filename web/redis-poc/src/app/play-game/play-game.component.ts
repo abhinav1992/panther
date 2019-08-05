@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef  } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
+import { SignalrService } from '../signalr.service';
 
 @Component({
   selector: 'app-play-game',
@@ -10,7 +11,9 @@ import { Router } from '@angular/router';
 export class PlayGameComponent implements OnInit {
   modalRef: BsModalRef;
   userName: String = '';
-  constructor(private modalService: BsModalService, private router: Router) { }
+  constructor(private modalService: BsModalService, private router: Router, private signalRService: SignalrService) { 
+    this.signalRService.initializeSignalRConnection();
+  }
 
   ngOnInit() {
   }
@@ -25,6 +28,7 @@ export class PlayGameComponent implements OnInit {
 
   proceedToPlay() {
     this.modalRef.hide();
+    this.signalRService.join(this.userName);
     console.log("Welcome ", this.userName);
   }
 }
