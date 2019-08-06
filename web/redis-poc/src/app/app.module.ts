@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PlayGameComponent } from './play-game/play-game.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     LeaderboardComponent,
     NewsComponent,
     NavbarComponent,
-    PlayGameComponent
+    PlayGameComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,

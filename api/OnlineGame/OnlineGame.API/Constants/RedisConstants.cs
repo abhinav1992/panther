@@ -11,5 +11,6 @@ namespace OnlineGame.API.Constants
         public const string USER_CONNECTION_KEY_PREFIX = "online_users";
         public const string USER_NAME = "name";
         public const string CONNECTION_ID = "connectionId";
+        public const string SCORES = "scores";
     }
 }
