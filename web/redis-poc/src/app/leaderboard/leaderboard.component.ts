@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { SignalrService } from '../signalr.service';
 import { Subscription } from 'rxjs';
 
@@ -7,22 +7,26 @@ import { Subscription } from 'rxjs';
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
 })
-export class LeaderboardComponent implements OnInit {
+export class LeaderboardComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   userScores: Array<any>;
   
-  constructor(private signalRService: SignalrService) { 
+  constructor(private signalRService: SignalrService, private zone: NgZone) { 
     this.userScores = new Array();
-    this.signalRService.initializeSignalRConnection();
   }
 
   ngOnInit() {
-
+    this.signalRService.initializeSignalRConnection();
     this.subscription = this.signalRService.signalResponse.subscribe(message => this.onSignalMessageReceived(message));
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   private onSignalMessageReceived(message: any) {
+    debugger;
     if (message.method == "score-update") {
       this.userScores = message.data;
     }

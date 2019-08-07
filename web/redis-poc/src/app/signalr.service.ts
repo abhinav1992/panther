@@ -1,65 +1,79 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, NgZone } from '@angular/core';
+import { SignalR, SignalRConnection } from 'ng2-signalr'
 declare var $: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalrService {
-
+  private conn: SignalRConnection;
   public signalResponse: EventEmitter<any>;
   private connection: any;
   private proxy: any;
-  constructor() { 
+  constructor(private zone: NgZone, private _signalR: SignalR) { 
     this.signalResponse = new EventEmitter();
   }
 
   public initializeSignalRConnection(): void {
-    //if (!this.connection) {
-      let signalRServerEndPoint = 'http://192.168.10.196:4201';
-      this.connection = $.hubConnection(signalRServerEndPoint);
-      this.proxy = this.connection.createHubProxy('GameZoneHub');
+    if (!this.conn) {
+      this.conn = this._signalR.createConnection();
+      this.conn.listenFor('joined').subscribe((success:boolean) => this.onJoined(success));
+      this.conn.listenFor('messageReceived').subscribe((serverMessage:string) => this.onMessageReceived(serverMessage));
+      this.conn.listenFor('scoreUpdate').subscribe((updatedScores:Array<any>) => this.onScoreUpdate(updatedScores));
+      this.conn.listenFor('newsPublished').subscribe((news:string) => this.onNewsReceived(news));
+      this.conn.listenFor('publishAllNews').subscribe((allNews:Array<string>) => this.onAllNewsUpdate(allNews));
   
-      this.proxy.on('messageReceived', (serverMessage) => this.onMessageReceived(serverMessage));
-      this.proxy.on('joined', (success) => this.onJoined(success));
-      this.proxy.on('scoreUpdate', (updatedScores) => this.onScoreUpdate(updatedScores));
-  
-      this.connection.start().done((data: any) => {
-        console.log('Connected to Notification Hub');
+      this.conn.start().then((data: any) => {
+        console.log('connection is made')
         this.signalResponse.emit({ method: 'connection', data: null })
-        //this.broadcastMessage();
-      }).catch((error: any) => {
-        console.log('Notification Hub error -> ' + error);
       });
-    //}
-    //else {
-    //  this.signalResponse.emit({ method: 'connection', data: null })
-    //}
+    }
+    else {
+      this.conn.start().then((data: any) => {
+        console.log('connection is made')
+        this.signalResponse.emit({ method: 'connection', data: null })
+      });
+    }
+    
   }
   public join(name: String): void {
-    this.proxy.invoke('join', name)
-      .catch((error: any) => {
-        console.log('broadcastMessage error -> ' + error);
-      });
+    this.conn.invoke('join', name).catch((err) => {
+      console.log('broadcastMessage error -> ' + err);
+    })
   }
 
   public getUpdatedScores() {
-    this.proxy.invoke('getUpdatedScore')
+    this.conn.invoke('getUpdatedScore')
       .catch((error: any) => {
         console.log('broadcastMessage error -> ' + error);
       })
   }
 
   public unjoin(name: String): void {
-    this.proxy.invoke('unjoin', name)
+    this.conn.invoke('unjoin', name)
       .catch((error: any) => {
         console.log('broadcastMessage error -> ' + error);
       });
   }
 
   public updateScore(name: string, score: number) {
-    this.proxy.invoke('updateScore', name, score).catch((error: any) => {
+    this.conn.invoke('updateScore', name, score).catch((error: any) => {
       console.log('broadcastMessage error -> ' + error);
     })
+  }
+
+  public getUpdatedNews() {
+    this.conn.invoke('GetNewsUpdate').catch((error: any) => {
+      console.log('broadcastMessage error -> ' + error);
+    })
+  }
+
+  private onAllNewsUpdate(allNews: Array<string>) {
+    let message = {
+      method: 'all-news-update',
+      data: allNews
+    };
+    this.signalResponse.emit(message);
   }
 
   private onMessageReceived(serverMessage: string) {
@@ -80,6 +94,15 @@ export class SignalrService {
       method: 'joined',
       data: success
     };
+    this.signalResponse.emit(message);
+  }
+
+  private onNewsReceived(newsMessage: string) {
+    console.log("News Received: ", newsMessage);
+    let message = {
+      method: 'news',
+      data: newsMessage
+    }
     this.signalResponse.emit(message);
   }
 }

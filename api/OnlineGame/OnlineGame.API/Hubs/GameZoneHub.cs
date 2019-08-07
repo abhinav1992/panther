@@ -15,10 +15,39 @@ namespace OnlineGame.API.Hubs
 {
     public class GameZoneHub : Hub
     {
-        StackExchange.Redis.IDatabase _cacheDatabase;
+        IDatabase _cacheDatabase;
+        static List<NewsSubscriber> _subscribers;
+        static ISubscriber _subscriber;
+        static ISubscriber _publisher;
+        string channelName = "NewsChannel";
         public GameZoneHub()
         {
+            if (_subscribers == null)
+            {
+                _subscribers = new List<NewsSubscriber>();
+            }
             _cacheDatabase = RedisConnectionHelper.RedisConnection.GetDatabase();
+
+            if (_publisher == null)
+                _publisher = RedisConnectionHelper.RedisConnection.GetSubscriber();
+            if (_subscriber == null)
+            {
+                _subscriber = RedisConnectionHelper.RedisConnection.GetSubscriber();
+                _subscriber.Subscribe(channelName).OnMessage((message) =>
+                {
+                    SaveNews(message.Message);
+                    PublishNews(message.Message);
+                });
+            }
+        }
+        public override Task OnConnected()
+        {
+            //Add subscriber for the user
+            return base.OnConnected();
+        }
+        public void PublishNews(string message)
+        {
+            Clients.All.newsPublished(message);
         }
         public void Hello()
         {
@@ -40,11 +69,19 @@ namespace OnlineGame.API.Hubs
             RemoveOnlineUser(Context.ConnectionId);
         }
 
+        public void GetNewsUpdate()
+        {
+            List<string> news = GetNews();
+            Clients.Client(Context.ConnectionId).publishAllNews(news);
+        }
+
         public void UpdateScore(string name, int score)
         {
             //Add the score
             List<UserScore> userScores = AddScore(name, score);
             Clients.All.scoreUpdate(userScores);
+            // publish message to one channel
+            _publisher.Publish(channelName, $"{name} has got {score} points");
         }
 
         public void GetUpdatedScore()
@@ -57,6 +94,7 @@ namespace OnlineGame.API.Hubs
         {
             //Remove online user from cache
             RemoveOnlineUser(Context.ConnectionId);
+            RemoveNews();
             return base.OnDisconnected(stopCalled);
         }
 
@@ -76,8 +114,37 @@ namespace OnlineGame.API.Hubs
             entries.Add(new HashEntry(RedisConstants.USER_NAME, name));
             entries.Add(new HashEntry(RedisConstants.CONNECTION_ID, connectionId));
             _cacheDatabase.HashSet(string.Format("{0}:{1}", RedisConstants.USER_CONNECTION_KEY_PREFIX, connectionId), entries.ToArray());
+            
             return true;
             
+        }
+
+        private void SaveNews(string message)
+        {
+            string key = string.Format("{0}", "news");
+            _cacheDatabase.ListRightPush(key, message);
+        }
+
+        private List<string> GetNews()
+        {
+            string key = string.Format("{0}", "news");
+            List<string> newsList = new List<string>();
+            var news = _cacheDatabase.ListRange(key);
+            foreach (RedisValue value in news)
+            {
+                newsList.Add(value);
+            }
+            return newsList;
+        }
+
+        private void RemoveNews()
+        {
+            string key = string.Format("{0}", "news");
+            var news = _cacheDatabase.ListRange(key);
+            foreach (RedisValue value in news)
+            {
+                _cacheDatabase.ListRemove(key, value);
+            }
         }
 
         private void RemoveOnlineUser(string connectionId)
@@ -107,7 +174,7 @@ namespace OnlineGame.API.Hubs
                     List<UserScore> userScores = GetUserScores();
                     Clients.All.scoreUpdate(userScores);
                 }
-                
+               
             }
         }
 

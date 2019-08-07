@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { SignalrService } from '../signalr.service';
 
 @Component({
   selector: 'app-games',
@@ -8,9 +9,12 @@ import { Router } from "@angular/router";
 })
 export class GamesComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private signalRService: SignalrService) { 
+    
+  }
 
   ngOnInit() {
+    this.signalRService.initializeSignalRConnection();
   }
 
   play() {

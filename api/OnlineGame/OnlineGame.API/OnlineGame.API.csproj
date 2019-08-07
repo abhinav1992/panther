@@ -191,6 +191,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\GameZoneHub.cs" />
+    <Compile Include="Models\NewsSubscriber.cs" />
     <Compile Include="Models\OnlineUser.cs" />
     <Compile Include="Models\UserScore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

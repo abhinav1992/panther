@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ElementRef, OnDestroy  } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { SignalrService } from '../signalr.service';
@@ -17,7 +17,8 @@ export class PlayGameComponent implements OnInit, OnDestroy {
   gameCompleted: boolean = false;
   subscription: Subscription;
   totalScore: number = 0;
-  constructor(private modalService: BsModalService, private router: Router, private signalRService: SignalrService, private elementRef: ElementRef) { 
+  constructor(private modalService: BsModalService, private router: Router, 
+    private signalRService: SignalrService, private zone: NgZone) {
     this.signalRService.initializeSignalRConnection();
   }
 
@@ -57,12 +58,15 @@ export class PlayGameComponent implements OnInit, OnDestroy {
 
   private onSignalMessageReceived(message: any) {
     if (message.method && message.data == true && message.method == "joined") {
-      this.modalRef.hide();
-      this.gameStarted = true;
+      this.zone.run(() => {
+        this.modalRef.hide();
+        this.gameStarted = true;
+      })
     }
     else {
-      this.userNameError = true;
+      this.zone.run(() => {
+        this.userNameError = true;
+      })
     }
   }
-
 }

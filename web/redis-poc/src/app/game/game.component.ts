@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -14,7 +14,7 @@ export class GameComponent implements OnInit {
   @Input() name: string;
   @Output() gameFinished = new EventEmitter<number>();
 
-  constructor() {
+  constructor(private ref: ChangeDetectorRef) {
     this.scores = new Array();
   }
 
@@ -27,9 +27,12 @@ export class GameComponent implements OnInit {
       this.scores.push(score);
       this.countdown = this.countdown - 1;
       this.currentScore = this.getTotalScore();
+      //this.ref.detectChanges();
+
     }
     else {
       let totalScore = this.getTotalScore();
+      //this.ref.detectChanges();
       this.gameFinished.next(totalScore);
     }
   }
