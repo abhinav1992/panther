@@ -7,6 +7,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGame.API", "OnlineGam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGame.Cache", "OnlineGame.Cache\OnlineGame.Cache.csproj", "{429745A9-B0A7-46EE-A40A-CCFAF95B709A}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "OnlineGameWeb", "..\..\..\..\..\Builds\OnlineGameWeb\", "{1B015D70-F969-4B6F-AFD2-BCD1E2368AC4}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv2.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_51227"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\Builds\OnlineGameWeb\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51227\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_51227"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\Builds\OnlineGameWeb\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51227\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "51227"
+		SlnRelativePath = "..\..\..\..\..\Builds\OnlineGameWeb\"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +42,10 @@ Global
 		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{429745A9-B0A7-46EE-A40A-CCFAF95B709A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B015D70-F969-4B6F-AFD2-BCD1E2368AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B015D70-F969-4B6F-AFD2-BCD1E2368AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B015D70-F969-4B6F-AFD2-BCD1E2368AC4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B015D70-F969-4B6F-AFD2-BCD1E2368AC4}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

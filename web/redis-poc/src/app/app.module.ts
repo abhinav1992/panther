@@ -20,7 +20,7 @@ export function createConfig(): SignalRConfiguration {
   const c = new SignalRConfiguration();
   c.hubName = 'GameZoneHub';
   c.qs = { user: 'donald' };
-  c.url = 'http://192.168.10.196:4201/';
+  c.url = 'https://api-redis.azurewebsites.net/';
   c.logging = true;
   
   // >= v5.0.0

@@ -22,7 +22,7 @@ namespace OnlineGame.API
 
         protected void Application_BeginRequest()
         {
-            string[] allowedOrigin = new string[] { "http://localhost:4200", "http://192.168.10.196:4200", "http://localhost:5200", "http://192.168.10.196:5200" };
+            string[] allowedOrigin = new string[] { "http://localhost:4200", "http://192.168.10.196:4200", "http://localhost:5200", "http://192.168.10.196:5200", "https://onlinegame1.azurewebsites.net" };
             var origin = HttpContext.Current.Request.Headers["Origin"];
             if (origin != null && allowedOrigin.Contains(origin))
             {
